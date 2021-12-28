@@ -34,9 +34,15 @@ def main(_argv):
     STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = FLAGS.size
     video_path = FLAGS.video
-
+    
     print("Video from: ", video_path )
-    vid = cv2.VideoCapture(video_path)
+    # begin video capture
+    try:
+        vid = cv2.VideoCapture(int(video_path))
+        vid.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        vid.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+    except:
+        vid = cv2.VideoCapture(video_path)
 
     if FLAGS.framework == 'tflite':
         interpreter = tf.lite.Interpreter(model_path=FLAGS.weights)
